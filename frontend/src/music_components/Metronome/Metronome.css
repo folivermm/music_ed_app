@@ -1,0 +1,35 @@
+.metronome {
+  background-color: #e6e6e6; /* Background color */
+  float: right; /* Position to the right */
+  padding: 20px; /* Add padding for spacing */
+  border-radius: 8px; /* Add border radius for rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+.bpm-slider {
+  display: flex;
+  align-items: center;
+}
+
+.bpm-slider p {
+  margin-right: 10px;
+}
+
+.bpm-slider input {
+  width: 150px;
+  -webkit-appearance: none;
+  background: #fff;
+  height: 5px;
+  border-radius: 5px;
+  outline: none;
+  margin: 0;
+}
+
+.bpm-slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+}

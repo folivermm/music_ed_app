@@ -1,0 +1,26 @@
+.nav-play-container {
+  position: relative;
+}
+
+.nav-play {
+  position: relative;
+}
+
+.controls-container {
+  position: absolute;
+  top: -50px;
+  left: 63%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.music-container {
+  margin-top: 100px;
+}
+
+.controls-container button {
+  margin-top: 10px;
+  margin-right: -100px;
+}
