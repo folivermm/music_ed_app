@@ -88,30 +88,35 @@ function MajorIntLayout() {
         const startingPoint = startingPointRef.current.value;
         const endingPoint = endingPointRef.current.value;
 
-        const startCharCode = startingPoint.charCodeAt(0);
-        const endCharCode = endingPoint.charCodeAt(0);
+        // Define the order of keys in the circle of fifths based on the keyComponentsFifths object keys
+        const circleOfFourthsOrder = Object.keys(keyComponentsFourths);
 
-        const keysInRange = Object.entries(keyComponentsFourths).reduce((acc, [note, component]) => {
-            const noteCharCode = note.charCodeAt(0);
-            if ((startCharCode <= endCharCode && noteCharCode >= startCharCode && noteCharCode <= endCharCode) ||
-                (startCharCode > endCharCode && (noteCharCode >= startCharCode || noteCharCode <= endCharCode))) {
-                acc.push({ note, component });
-            }
-            return acc;
-        }, []);
+        // Find the index of the starting and ending points in the circle of fifths
+        const startIndex = circleOfFourthsOrder.indexOf(startingPoint);
+        const endIndex = circleOfFourthsOrder.indexOf(endingPoint);
 
-        let startIndex = 0;
-        for (let i = 0; i < keysInRange.length; i++) {
-            if (keysInRange[i].note === startingPoint) {
-                startIndex = i;
-                break;
+        // Extract the keys in the range from start to end, considering the circular nature of the circle of fifths
+        const keysInRange = [];
+        if (startIndex !== -1 && endIndex !== -1) {
+            if (startIndex <= endIndex) {
+                // Case where the range does not wrap around
+                for (let i = startIndex; i <= endIndex; i++) {
+                    keysInRange.push({ note: circleOfFourthsOrder[i], component: keyComponentsFourths[circleOfFourthsOrder[i]] });
+                }
+            } else {
+                // Case where the range wraps around
+                for (let i = startIndex; i < circleOfFourthsOrder.length; i++) {
+                    keysInRange.push({ note: circleOfFourthsOrder[i], component: keyComponentsFourths[circleOfFourthsOrder[i]] });
+                }
+                for (let i = 0; i <= endIndex; i++) {
+                    keysInRange.push({ note: circleOfFourthsOrder[i], component: keyComponentsFourths[circleOfFourthsOrder[i]] });
+                }
             }
         }
 
-        const reorderedKeys = [...keysInRange.slice(startIndex), ...keysInRange.slice(0, startIndex)];
-
-        setSortedKeys(reorderedKeys.map(({ component }) => component));
+        setSortedKeys(keysInRange.map(({ component }) => component));
     };
+
 
     const handleSortForFifths = () => {
         const startingPoint = startingPointRef.current.value;
@@ -152,11 +157,11 @@ function MajorIntLayout() {
         const endingPoint = endingPointRef.current.value;
 
         // Define the order of keys in the circle of fifths based on the keyComponentsFifths object keys
-        const circleC = Object.keys(keyComponentsChromatic);
+        const circleChromatic = Object.keys(keyComponentsChromatic);
 
         // Find the index of the starting and ending points in the circle of fifths
-        const startIndex = circleC.indexOf(startingPoint);
-        const endIndex = circleC.indexOf(endingPoint);
+        const startIndex = circleChromatic.indexOf(startingPoint);
+        const endIndex = circleChromatic.indexOf(endingPoint);
 
         // Extract the keys in the range from start to end, considering the circular nature of the circle of fifths
         const keysInRange = [];
@@ -164,15 +169,15 @@ function MajorIntLayout() {
             if (startIndex <= endIndex) {
                 // Case where the range does not wrap around
                 for (let i = startIndex; i <= endIndex; i++) {
-                    keysInRange.push({ note: circleC[i], component: keyComponentsChromatic[circleC[i]] });
+                    keysInRange.push({ note: circleChromatic[i], component: keyComponentsChromatic[circleChromatic[i]] });
                 }
             } else {
                 // Case where the range wraps around
-                for (let i = startIndex; i < circleC.length; i++) {
-                    keysInRange.push({ note: circleC[i], component: keyComponentsChromatic[circleC[i]] });
+                for (let i = startIndex; i < circleChromatic.length; i++) {
+                    keysInRange.push({ note: circleChromatic[i], component: keyComponentsChromatic[circleChromatic[i]] });
                 }
                 for (let i = 0; i <= endIndex; i++) {
-                    keysInRange.push({ note: circleC[i], component: keyComponentsChromatic[circleC[i]] });
+                    keysInRange.push({ note: circleChromatic[i], component: keyComponentsChromatic[circleChromatic[i]] });
                 }
             }
         }
