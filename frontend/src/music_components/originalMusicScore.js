@@ -1,3 +1,389 @@
+// import React, { useState, useRef, useEffect } from 'react';
+// import CM_C_NavPlay from './NavPlay/C_NavPlay/CM_C_NavPlay';
+// import FM_F_NavPlay from './NavPlay/F_NavPlay/FM_F_NavPlay';
+// import BbM_Bb_NavPlay from './NavPlay/Bb_NavPlay/BbM_Bb_NavPlay';
+// import EbM_Eb_NavPlay from './NavPlay/Eb_NavPlay/EbM_Eb_NavPlay';
+// import AbM_Ab_NavPlay from './NavPlay/Ab_NavPlay/AbM_Ab_NavPlay';
+// import DbM_Db_NavPlay from './NavPlay/Db_NavPlay/DbM_Db_NavPlay';
+// import GbM_Gb_NavPlay from './NavPlay/Gb_NavPlay/GbM_Gb_NavPlay';
+// import BM_B_NavPlay from './NavPlay/B_NavPlay/BM_B_NavPlay';
+// import EM_E_NavPlay from './NavPlay/E_NavPlay/EM_E_NavPlay';
+// import AM_A_NavPlay from './NavPlay/A_NavPlay/AM_A_NavPlay';
+// import DM_D_NavPlay from './NavPlay/D_NavPlay/DM_D_NavPlay';
+// import GM_G_NavPlay from './NavPlay/G_NavPlay/GM_G_NavPlay';
+// import NavSortBar from '../NavSortBar/NavSortBar';
+
+// import './MajorIntLayout.css';
+
+// function MajorIntLayout() {
+//     const startingPointRef = useRef(null);
+//     const endingPointRef = useRef(null);
+
+//     const keyComponentsFourths = {
+//         "L": <CM_C_NavPlay />,
+//         "M": <FM_F_NavPlay />,
+//         "N": <BbM_Bb_NavPlay />,
+//         "O": <EbM_Eb_NavPlay />,
+//         "P": <AbM_Ab_NavPlay />,
+//         "Q": <DbM_Db_NavPlay />,
+//         "R": <GbM_Gb_NavPlay />,
+//         "S": <BM_B_NavPlay />,
+//         "T": <EM_E_NavPlay />,
+//         "U": <AM_A_NavPlay />,
+//         "V": <DM_D_NavPlay />,
+//         "W": <GM_G_NavPlay />
+//     };
+
+//     const keyComponentsChromatic = {
+//         "L": <CM_C_NavPlay />,
+//         "M": <DbM_Db_NavPlay />,
+//         "N": <DM_D_NavPlay />,
+//         "O": <EbM_Eb_NavPlay />,
+//         "P": <EM_E_NavPlay />,
+//         "Q": <FM_F_NavPlay />,
+//         "R": <GbM_Gb_NavPlay />,
+//         "S": <GM_G_NavPlay />,
+//         "T": <AbM_Ab_NavPlay />,
+//         "U": <AM_A_NavPlay />,
+//         "V": <BbM_Bb_NavPlay />,
+//         "W": <BM_B_NavPlay />
+//     };
+
+//     const [sortedKeys, setSortedKeys] = useState([]);
+//     const [sortingOption, setSortingOption] = useState('fourths');
+
+//     const handleSortingOptionChange = (sortingOption) => {
+//         console.log('Selected sorting option:', sortingOption);
+//         setSortingOption(sortingOption);
+//     };
+
+//     const handleSortButtonClick = () => {
+//         const startingPoint = startingPointRef.current.value;
+//         const endingPoint = endingPointRef.current.value;
+
+//         const startCharCode = startingPoint.charCodeAt(0);
+//         const endCharCode = endingPoint.charCodeAt(0);
+
+//         const keyComponents = sortingOption === 'fourths' ? keyComponentsFourths : keyComponentsChromatic;
+
+//         const keysInRange = Object.entries(keyComponents).reduce((acc, [note, component]) => {
+//             const noteCharCode = note.charCodeAt(0);
+//             if ((startCharCode <= endCharCode && noteCharCode >= startCharCode && noteCharCode <= endCharCode) ||
+//                 (startCharCode > endCharCode && (noteCharCode >= startCharCode || noteCharCode <= endCharCode))) {
+//                 acc.push({ note, component });
+//             }
+//             return acc;
+//         }, []);
+
+//         let startIndex = 0;
+//         for (let i = 0; i < keysInRange.length; i++) {
+//             if (keysInRange[i].note === startingPoint) {
+//                 startIndex = i;
+//                 break;
+//             }
+//         }
+
+//         const reorderedKeys = [...keysInRange.slice(startIndex), ...keysInRange.slice(0, startIndex)];
+
+//         setSortedKeys(reorderedKeys.map(({ component }) => component));
+//     };
+
+//     useEffect(() => {
+//         handleSortButtonClick();
+//     }, []);
+
+//     return (
+//         <div className="MajorIntLayout">
+//             <NavSortBar
+//                 startingPointRef={startingPointRef}
+//                 endingPointRef={endingPointRef}
+//                 onSortingOptionChange={handleSortingOptionChange}
+//             />
+//             <div className="sorted-keys">
+//                 {sortedKeys.map((key, index) => (
+//                     <div key={index}>{key}</div>
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// }
+
+
+// export default MajorIntLayout;
+
+
+
+
+
+
+
+
+
+
+
+// function MajorIntLayout() {
+//     // Define the ref for starting and ending points
+//     const startingPointRef = useRef(null);
+//     const endingPointRef = useRef(null);
+
+//     // Map each note name to its corresponding component
+//     const keyComponents = {
+//         "L": <CM_C_NavPlay />,
+//         "M": <FM_F_NavPlay />,
+//         "N": <BbM_Bb_NavPlay />,
+//         "O": <EbM_Eb_NavPlay />,
+//         "P": <AbM_Ab_NavPlay />,
+//         "Q": <DbM_Db_NavPlay />,
+//         "R": <GbM_Gb_NavPlay />,
+//         "S": <BM_B_NavPlay />,
+//         "T": <EM_E_NavPlay />,
+//         "U": <AM_A_NavPlay />,
+//         "V": <DM_D_NavPlay />,
+//         "W": <GM_G_NavPlay />
+//     };
+
+//     const [sortedKeys, setSortedKeys] = useState([]);
+//     const handleSortButtonClick = () => {
+//         // Get the selected starting and ending points from the refs
+//         const startingPoint = startingPointRef.current.value;
+//         const endingPoint = endingPointRef.current.value;
+
+//         // Get the starting and ending char codes
+//         const startCharCode = startingPoint.charCodeAt(0);
+//         const endCharCode = endingPoint.charCodeAt(0);
+
+//         // Get the keys between the starting and ending points
+//         const keysInRange = Object.entries(keyComponents).reduce((acc, [note, component]) => {
+//             const noteCharCode = note.charCodeAt(0);
+//             // Check if the current note is within the range or wrapping around
+//             if ((startCharCode <= endCharCode && noteCharCode >= startCharCode && noteCharCode <= endCharCode) ||
+//                 (startCharCode > endCharCode && (noteCharCode >= startCharCode || noteCharCode <= endCharCode))) {
+//                 acc.push({ note, component });
+//             }
+//             return acc;
+//         }, []);
+
+//         // Find the index of the starting point in the keysInRange array
+//         let startIndex = 0;
+//         for (let i = 0; i < keysInRange.length; i++) {
+//             if (keysInRange[i].note === startingPoint) {
+//                 startIndex = i;
+//                 break;
+//             }
+//         }
+
+//         // Reorder the keys to start from the starting point and end at the ending point
+//         const reorderedKeys = [...keysInRange.slice(startIndex), ...keysInRange.slice(0, startIndex)];
+
+//         // Update the sorted keys state with the reordered keys
+//         setSortedKeys(reorderedKeys.map(({ component }) => component));
+//     };
+
+
+//     useEffect(() => {
+//         // Set initial sorted keys when the component mounts
+//         handleSortButtonClick();
+//     }, []); // Run only once after initial render
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// <option value="W">G</option>
+// <option value="V">D</option>
+// <option value="U">A</option>
+// <option value="T">E</option>
+// <option value="S">B</option>
+// <option value="R">Gb/F#</option>
+// <option value="Q">Db/C#</option>
+// <option value="P">Ab</option>
+// <option value="O">Eb</option>
+// <option value="N">Bb</option>
+// <option value="M">F</option>
+// <option value="L">C</option>
+
+
+// "L": <CM_C_NavPlay />,
+// "M": <DbM_Db_NavPlay />,
+// "N": <DM_D_NavPlay />,
+// "O": <EbM_Eb_NavPlay />,
+// "P": <EM_E_NavPlay />,
+// "Q": <FM_F_NavPlay />,
+// "R": <GbM_Gb_NavPlay />,
+// "S": <GM_G_NavPlay />,
+// "T": <AbM_Ab_NavPlay />,
+// "U": <AM_A_NavPlay />,
+// "V": <BbM_Bb_NavPlay />,
+// "W": <BM_B_NavPlay />,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import React, { useState, useEffect } from 'react';
 // import abcjs from 'abcjs';
 // import * as Tone from 'tone';

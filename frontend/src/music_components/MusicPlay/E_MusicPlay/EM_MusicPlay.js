@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as Tone from 'tone';
 
-const GbM_MusicPlay = ({ tempo, shouldStart, shouldRefreshPage, continuousPlay }) => {
+const EM_MusicPlay = ({ tempo, shouldStart, shouldRefreshPage, continuousPlay }) => {
     const [musicStarted, setMusicStarted] = useState(false);
 
     const handleMusicStart = async () => {
@@ -12,22 +12,22 @@ const GbM_MusicPlay = ({ tempo, shouldStart, shouldRefreshPage, continuousPlay }
         const synth = new Tone.Synth().toDestination();
         Tone.Transport.bpm.value = tempo;
         const notes = [
-            { pitch: 'F4', timing: '0:0' },
-            { pitch: 'G4', timing: '0:1' },
-            { pitch: 'A4', timing: '0:2' },
-            { pitch: 'Bb4', timing: '0:3' },
-            { pitch: 'C5', timing: '0:4' },
-            { pitch: 'D5', timing: '0:5' },
-            { pitch: 'E5', timing: '0:6' },
-            { pitch: 'F5', timing: '0:7' },
-            { pitch: 'G5', timing: '0:8' },
-            { pitch: 'F5', timing: '0:9' },
-            { pitch: 'E5', timing: '0:10' },
-            { pitch: 'D5', timing: '0:11' },
-            { pitch: 'C5', timing: '0:12' },
-            { pitch: 'Bb4', timing: '0:13' },
-            { pitch: 'A4', timing: '0:14' },
-            { pitch: 'G4', timing: '0:15' },
+            { pitch: 'E4', timing: '0:0' },
+            { pitch: 'F#4', timing: '0:1' },
+            { pitch: 'G#4', timing: '0:2' },
+            { pitch: 'A4', timing: '0:3' },
+            { pitch: 'B4', timing: '0:4' },
+            { pitch: 'C#5', timing: '0:5' },
+            { pitch: 'D#5', timing: '0:6' },
+            { pitch: 'E5', timing: '0:7' },
+            { pitch: 'F#5', timing: '0:8' },
+            { pitch: 'E5', timing: '0:9' },
+            { pitch: 'D#5', timing: '0:10' },
+            { pitch: 'C#5', timing: '0:11' },
+            { pitch: 'B4', timing: '0:12' },
+            { pitch: 'A4', timing: '0:13' },
+            { pitch: 'G#4', timing: '0:14' },
+            { pitch: 'F#4', timing: '0:15' },
         ];
 
         let iterations = 0;
@@ -83,4 +83,4 @@ const GbM_MusicPlay = ({ tempo, shouldStart, shouldRefreshPage, continuousPlay }
     return null; // No need to render anything in this component
 };
 
-export default GbM_MusicPlay;
+export default EM_MusicPlay;

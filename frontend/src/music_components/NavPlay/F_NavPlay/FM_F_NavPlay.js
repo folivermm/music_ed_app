@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Metronome from '../../Metronome/Metronome';
-import FM_IntMusicScore from '../../MusicScore/F_MusicScore/FM_IntMusicScore';
+import FM_IntMusicScore from '../../MusicScore/F_IntMusicScore/FM_IntMusicScore';
 import FM_MusicPlay from '../../MusicPlay/F_MusicPlay/FM_MusicPlay';
 import './FM_F_NavPlay.css';
 

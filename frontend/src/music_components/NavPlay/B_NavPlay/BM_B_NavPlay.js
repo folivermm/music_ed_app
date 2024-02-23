@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Metronome from '../../Metronome/Metronome';
-import CM_IntMusicScore from '../../MusicScore/C_IntMusicScore/CM_IntMusicScore';
-import CM_MusicPlay from '../../MusicPlay/C_MusicPlay/CM_MusicPlay';
-import './CM_C_NavPlay.css';
+import BM_IntMusicScore from '../../MusicScore/B_IntMusicScore/BM_IntMusicScore';
+import BM_MusicPlay from '../../MusicPlay/B_MusicPlay/BM_MusicPlay';
+import './BM_B_NavPlay.css';
 
-const CM_C_NavPlay = () => {
+const BM_B_NavPlay = () => {
     const [tempo, setTempo] = useState(() => {
         const storedTempo = localStorage.getItem('tempo');
         return storedTempo ? parseInt(storedTempo, 10) : 60;
@@ -57,12 +57,12 @@ const CM_C_NavPlay = () => {
                     <button onClick={handlePlayContToggle}>{isPlaying ? "Stop Cont" : "Play Cont"}</button>
                     <button onClick={handlePlayScaleToggle}>{isPlaying ? "Stop Scale" : "Play Scale"}</button>
                     <button onClick={handlePlayToggle}>{isPlaying ? "Stop" : "Play Me"}</button>
-                    <CM_MusicPlay tempo={tempo} shouldStart={isPlaying || continuousPlay} shouldRefreshPage={shouldRefreshPage} continuousPlay={continuousPlay} />                </div>
+                    <BM_MusicPlay tempo={tempo} shouldStart={isPlaying || continuousPlay} shouldRefreshPage={shouldRefreshPage} continuousPlay={continuousPlay} />                </div>
                 <div className="music-container">
-                    <CM_IntMusicScore displayRest={displayRest} tempo={tempo} shouldStart={isPlaying || continuousPlay} delay={delay} />                </div>
+                    <BM_IntMusicScore displayRest={displayRest} tempo={tempo} shouldStart={isPlaying || continuousPlay} delay={delay} />                </div>
             </div>
         </div>
     );
 };
 
-export default CM_C_NavPlay;
+export default BM_B_NavPlay;
