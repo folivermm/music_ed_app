@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import * as Tone from 'tone';
 
-const CM_MusicPlay = ({ tempo, shouldStart, shouldRefreshPage, continuousPlay }) => {
+const CM_MusicPlay = ({ tempo, shouldStart, continuousPlay, onStop }) => {
     const [musicStarted, setMusicStarted] = useState(false);
+    const [playbackEnded, setPlaybackEnded] = useState(false); // New state to track if playback has ended
 
     const handleMusicStart = async () => {
         // Start the Tone context if not already started
@@ -49,12 +50,7 @@ const CM_MusicPlay = ({ tempo, shouldStart, shouldRefreshPage, continuousPlay })
                 loopCount++;
                 if (loopCount >= 2) {
                     loop.stop();
-                    if (shouldRefreshPage) {
-                        // Trigger page refresh only if shouldRefreshPage is true
-                        setTimeout(() => {
-                            window.location.reload(); // Refresh the page after the duration of a whole note
-                        }, 1000 * (60 / tempo) * 4); // Calculate the duration of a whole note and wait for that time before refreshing
-                    }
+                    setPlaybackEnded(true); // Update playbackEnded when playback ends
                 }
             }
         }, '8n');
@@ -73,12 +69,44 @@ const CM_MusicPlay = ({ tempo, shouldStart, shouldRefreshPage, continuousPlay })
         if (!Tone.Transport.state === 'started') {
             Tone.Transport.start();
         }
+
+        setMusicStarted(true); // Update musicStarted
     };
+
+    const handleMusicStop = () => {
+        // Stop Tone.Transport and cancel any scheduled events
+        Tone.Transport.stop();
+        Tone.Transport.cancel();
+
+        // Set musicStarted to false
+        setMusicStarted(false);
+        console.log("Music stopped");
+    };
+
     useEffect(() => {
-        if (shouldStart && !musicStarted) {
-            handleMusicStart();
+        // Start or stop music based on shouldStart
+        if (shouldStart) {
+            if (!musicStarted) {
+                // If music is not started yet, start it
+                handleMusicStart();
+            } else {
+                // If music is already started, reset and start from the beginning
+                handleMusicStop();
+                handleMusicStart();
+            }
+        } else if (!shouldStart && musicStarted) {
+            // If shouldStart is false but music is started, stop it
+            handleMusicStop();
         }
-    }, [shouldStart, musicStarted]);
+    }, [shouldStart, continuousPlay]);
+
+
+    useEffect(() => {
+        if (playbackEnded) {
+            onStop(); // Call onStop when playback ends
+            setPlaybackEnded(false); // Reset playbackEnded when starting the playback again
+        }
+    }, [playbackEnded]);
 
     return null; // No need to render anything in this component
 };

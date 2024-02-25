@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Metronome from '../../Metronome/Metronome';
 import FM_IntMusicScore from '../../MusicScore/F_IntMusicScore/FM_IntMusicScore';
 import FM_MusicPlay from '../../MusicPlay/F_MusicPlay/FM_MusicPlay';
-import './FM_F_NavPlay.css';
+// import './FM_F_NavPlay.css';
 
-const FM_F_NavPlay = () => {
+const FM_C_NavPlay = () => {
     const [tempo, setTempo] = useState(() => {
         const storedTempo = localStorage.getItem('tempo');
         return storedTempo ? parseInt(storedTempo, 10) : 60;
     });
 
     const [isPlaying, setIsPlaying] = useState(false);
-    const [shouldRefreshPage, setShouldRefreshPage] = useState(false);
     const [continuousPlay, setContinuousPlay] = useState(false);
     const [displayRest, setDisplayRest] = useState(true);
-    const [delay, setDelay] = useState(true); // State for delay
+    const [delay, setDelay] = useState(true);
+    const [stopAfterMeasures, setStopAfterMeasures] = useState(null);
 
     const handleTempoChange = (newTempo) => {
         setTempo(newTempo);
@@ -22,47 +22,48 @@ const FM_F_NavPlay = () => {
 
     const handlePlayContToggle = () => {
         setIsPlaying(!isPlaying);
-        // setShouldRefreshPage(false);
         setContinuousPlay(false);
         setDelay(true);
+        setStopAfterMeasures(7); // Reset stopAfterMeasures
     };
 
     const handlePlayToggle = () => {
         setIsPlaying(!isPlaying);
-        setShouldRefreshPage(true);
         setContinuousPlay(false);
-        setDelay(true); // Setting delay to false for immediate start
-
+        setDelay(true);
+        setStopAfterMeasures(7); // Reset stopAfterMeasures
     };
 
     const handlePlayScaleToggle = () => {
         setIsPlaying(!isPlaying);
-        // setShouldRefreshPage(false);
         setContinuousPlay(true);
         setDisplayRest(false);
-        setDelay(false); // Setting delay to false for immediate start
+        setDelay(false);
+        setStopAfterMeasures(5); // Set stopAfterMeasures to 5
     };
 
     useEffect(() => {
         setIsPlaying(false);
-        setShouldRefreshPage(false);
         setContinuousPlay(false);
+        setStopAfterMeasures(null); // Reset stopAfterMeasures when unmounting
     }, []);
 
     return (
         <div className="nav-play-container">
             <div className="nav-play">
                 <div className="controls-container">
-                    <Metronome tempo={tempo} isPlaying={isPlaying} onTempoChange={handleTempoChange} />
+                    <Metronome tempo={tempo} isPlaying={isPlaying} onTempoChange={handleTempoChange} stopAfterMeasures={stopAfterMeasures} />
                     <button onClick={handlePlayContToggle}>{isPlaying ? "Stop Cont" : "Play Cont"}</button>
                     <button onClick={handlePlayScaleToggle}>{isPlaying ? "Stop Scale" : "Play Scale"}</button>
                     <button onClick={handlePlayToggle}>{isPlaying ? "Stop" : "Play Me"}</button>
-                    <FM_MusicPlay tempo={tempo} shouldStart={isPlaying || continuousPlay} shouldRefreshPage={shouldRefreshPage} continuousPlay={continuousPlay} />                </div>
+                    <FM_MusicPlay tempo={tempo} shouldStart={isPlaying || continuousPlay} continuousPlay={continuousPlay} />
+                </div>
                 <div className="music-container">
-                    <FM_IntMusicScore displayRest={displayRest} tempo={tempo} shouldStart={isPlaying || continuousPlay} delay={delay} />                </div>
+                    <FM_IntMusicScore displayRest={displayRest} tempo={tempo} shouldStart={isPlaying || continuousPlay} delay={delay} />
+                </div>
             </div>
         </div>
     );
 };
 
-export default FM_F_NavPlay;
+export default FM_C_NavPlay;

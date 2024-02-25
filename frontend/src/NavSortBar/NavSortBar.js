@@ -8,8 +8,9 @@ function NavSortBar({ onSortingOptionChange, startingPointRef, endingPointRef, o
                 <label htmlFor="sortingOption">Sort by:</label>
                 <select id="sortingOption" onChange={(e) => onSortingOptionChange(e.target.value)}>
                     <option value="fourths">Fourths</option>
-                    <option value="chromatic">Chromatic</option>
                     <option value="fifths">Fifths</option>
+                    <option value="sevenths">Sevenths</option>
+                    <option value="chromatic">Chromatic</option>
                 </select>
             </div>
             <div>
@@ -17,9 +18,9 @@ function NavSortBar({ onSortingOptionChange, startingPointRef, endingPointRef, o
                 <select id="startingPoint" ref={startingPointRef}>
                     <option value="L">C</option>
                     <option value="M">F</option>
-                    <option value="N">Bb</option>
-                    <option value="O">Eb</option>
-                    <option value="P">Ab</option>
+                    <option value="N">Bb/A#</option>
+                    <option value="O">Eb/D#</option>
+                    <option value="P">Ab/G#</option>
                     <option value="Q">Db/C#</option>
                     <option value="R">Gb/F#</option>
                     <option value="S">B</option>
@@ -34,9 +35,9 @@ function NavSortBar({ onSortingOptionChange, startingPointRef, endingPointRef, o
                 <select id="endingPoint" ref={endingPointRef}>
                     <option value="L">C</option>
                     <option value="M">F</option>
-                    <option value="N">Bb</option>
-                    <option value="O">Eb</option>
-                    <option value="P">Ab</option>
+                    <option value="N">Bb/A#</option>
+                    <option value="O">Eb/D#</option>
+                    <option value="P">Ab/G#</option>
                     <option value="Q">Db/C#</option>
                     <option value="R">Gb/F#</option>
                     <option value="S">B</option>

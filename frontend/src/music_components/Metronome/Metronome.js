@@ -1,21 +1,41 @@
 import React, { useState, useEffect } from 'react';
-// import './Metronome.css';
 import * as Tone from 'tone';
 
-const Metronome = ({ tempo: initialTempo, isPlaying, onTempoChange }) => {
+const Metronome = ({ tempo: initialTempo, isPlaying, onTempoChange, stopAfterMeasures }) => {
     const [tempo, setTempo] = useState(initialTempo || 60);
     const [shouldStart, setShouldStart] = useState(false);
+    const [loop, setLoop] = useState(null); // Store the loop instance
 
     useEffect(() => {
         // Store the tempo in local storage whenever it changes
         localStorage.setItem('tempo', tempo);
     }, [tempo]);
 
+    //start playing metronome
     useEffect(() => {
         if (isPlaying && !shouldStart) {
             setShouldStart(true);
+        } else if (!isPlaying && shouldStart) {
+            setShouldStart(false); // Reset shouldStart when playback stops
         }
     }, [isPlaying, shouldStart]);
+
+    //start loop over
+    useEffect(() => {
+        // Clean up function to stop the loop when unmounting or when shouldStart becomes false
+        return () => {
+            if (loop && shouldStart) {
+                loop.stop();
+            }
+        };
+    }, [loop, shouldStart]);
+
+    // start with a 2 measure rest
+    useEffect(() => {
+        if (shouldStart) {
+            handleMetronomeStart();
+        }
+    }, [shouldStart, stopAfterMeasures]);
 
     const handleMetronomeStart = async () => {
         await Tone.start();
@@ -24,7 +44,7 @@ const Metronome = ({ tempo: initialTempo, isPlaying, onTempoChange }) => {
 
         Tone.Transport.bpm.value = tempo;
 
-        const loop = new Tone.Loop((time) => {
+        const newLoop = new Tone.Loop((time) => {
             // Trigger C2 for beat one, and G2 for beats 2, 3, 4
             if (Tone.Transport.position.split(':')[1] === '0') {
                 membraneSynth.triggerAttackRelease('G1', '4n', time);
@@ -33,15 +53,17 @@ const Metronome = ({ tempo: initialTempo, isPlaying, onTempoChange }) => {
             }
         }, '4n');
 
-        loop.start(0); // Start the loop immediately
+        setLoop(newLoop); // Store the loop instance
+        newLoop.start(0); // Start the loop immediately
         Tone.Transport.start(); // Start the Transport to begin playback
-    };
 
-    useEffect(() => {
-        if (shouldStart) {
-            handleMetronomeStart();
+        // Schedule the loop to stop after the specified number of measures
+        if (stopAfterMeasures !== null) {
+            Tone.Transport.scheduleOnce(() => {
+                newLoop.stop();
+            }, `${stopAfterMeasures}m`);
         }
-    }, [shouldStart]);
+    };
 
     const handleTempoChange = (event) => {
         const newTempo = parseInt(event.target.value, 10);

@@ -11,55 +11,76 @@ const CM_C_NavPlay = () => {
     });
 
     const [isPlaying, setIsPlaying] = useState(false);
-    const [shouldRefreshPage, setShouldRefreshPage] = useState(false);
     const [continuousPlay, setContinuousPlay] = useState(false);
     const [displayRest, setDisplayRest] = useState(true);
-    const [delay, setDelay] = useState(true); // State for delay
+    const [delay, setDelay] = useState(true);
+    const [stopAfterMeasures, setStopAfterMeasures] = useState(null);
+    const [playButtonDisabled, setPlayButtonDisabled] = useState(false);
+    const [playbackEnded, setPlaybackEnded] = useState(false);
 
     const handleTempoChange = (newTempo) => {
         setTempo(newTempo);
     };
 
-    const handlePlayContToggle = () => {
-        setIsPlaying(!isPlaying);
-        // setShouldRefreshPage(false);
+    const handlePlayCont = () => {
+        setIsPlaying(true);
         setContinuousPlay(false);
+        setDisplayRest(true);
         setDelay(true);
+        setStopAfterMeasures(7);
+        setPlayButtonDisabled(true);
     };
 
-    const handlePlayToggle = () => {
-        setIsPlaying(!isPlaying);
-        setShouldRefreshPage(true);
-        setContinuousPlay(false);
-        setDelay(true); // Setting delay to false for immediate start
-
-    };
-
-    const handlePlayScaleToggle = () => {
-        setIsPlaying(!isPlaying);
-        // setShouldRefreshPage(false);
+    const handlePlayScale = () => {
+        setIsPlaying(true);
         setContinuousPlay(true);
         setDisplayRest(false);
-        setDelay(false); // Setting delay to false for immediate start
+        setDelay(false);
+        setStopAfterMeasures(5);
+        setPlayButtonDisabled(true);
+    };
+
+    const handlePlayKey = () => {
+        setIsPlaying(!isPlaying);
+        setContinuousPlay(false);
+        setDisplayRest(true);
+        setDelay(true);
+        setStopAfterMeasures(7);
+        setPlayButtonDisabled(true);
+    };
+
+    const handleStop = () => {
+        setIsPlaying(false);
+        setContinuousPlay(false);
+        setPlayButtonDisabled(false);
+        setPlaybackEnded(false); // Reset playbackEnded
     };
 
     useEffect(() => {
         setIsPlaying(false);
-        setShouldRefreshPage(false);
         setContinuousPlay(false);
+        setStopAfterMeasures(null);
+        setPlayButtonDisabled(false);
+        setPlaybackEnded(false);
     }, []);
+
 
     return (
         <div className="nav-play-container">
             <div className="nav-play">
                 <div className="controls-container">
-                    <Metronome tempo={tempo} isPlaying={isPlaying} onTempoChange={handleTempoChange} />
-                    <button onClick={handlePlayContToggle}>{isPlaying ? "Stop Cont" : "Play Cont"}</button>
-                    <button onClick={handlePlayScaleToggle}>{isPlaying ? "Stop Scale" : "Play Scale"}</button>
-                    <button onClick={handlePlayToggle}>{isPlaying ? "Stop" : "Play Me"}</button>
-                    <CM_MusicPlay tempo={tempo} shouldStart={isPlaying || continuousPlay} shouldRefreshPage={shouldRefreshPage} continuousPlay={continuousPlay} />                </div>
+                    <Metronome tempo={tempo} isPlaying={isPlaying} onTempoChange={handleTempoChange} stopAfterMeasures={stopAfterMeasures} />
+                    <button onClick={handlePlayCont} disabled={isPlaying || playButtonDisabled}>Play Cont</button>
+                    <button onClick={handlePlayScale} disabled={isPlaying || playButtonDisabled}>Play Scale</button>
+                    <button onClick={handleStop} disabled={!isPlaying && !continuousPlay}>Stop</button>
+                    <button onClick={handlePlayKey} disabled={isPlaying || continuousPlay || playButtonDisabled}>
+                        Play Key
+                    </button>
+                    <CM_MusicPlay tempo={tempo} shouldStart={isPlaying || continuousPlay} continuousPlay={continuousPlay} onStop={handleStop} />
+                </div>
                 <div className="music-container">
-                    <CM_IntMusicScore displayRest={displayRest} tempo={tempo} shouldStart={isPlaying || continuousPlay} delay={delay} />                </div>
+                    <CM_IntMusicScore displayRest={displayRest} tempo={tempo} shouldStart={isPlaying || continuousPlay} delay={delay} />
+                </div>
             </div>
         </div>
     );

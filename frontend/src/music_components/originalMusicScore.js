@@ -1,19 +1,4 @@
-// import React, { useState, useRef, useEffect } from 'react';
-// import CM_C_NavPlay from './NavPlay/C_NavPlay/CM_C_NavPlay';
-// import FM_F_NavPlay from './NavPlay/F_NavPlay/FM_F_NavPlay';
-// import BbM_Bb_NavPlay from './NavPlay/Bb_NavPlay/BbM_Bb_NavPlay';
-// import EbM_Eb_NavPlay from './NavPlay/Eb_NavPlay/EbM_Eb_NavPlay';
-// import AbM_Ab_NavPlay from './NavPlay/Ab_NavPlay/AbM_Ab_NavPlay';
-// import DbM_Db_NavPlay from './NavPlay/Db_NavPlay/DbM_Db_NavPlay';
-// import GbM_Gb_NavPlay from './NavPlay/Gb_NavPlay/GbM_Gb_NavPlay';
-// import BM_B_NavPlay from './NavPlay/B_NavPlay/BM_B_NavPlay';
-// import EM_E_NavPlay from './NavPlay/E_NavPlay/EM_E_NavPlay';
-// import AM_A_NavPlay from './NavPlay/A_NavPlay/AM_A_NavPlay';
-// import DM_D_NavPlay from './NavPlay/D_NavPlay/DM_D_NavPlay';
-// import GM_G_NavPlay from './NavPlay/G_NavPlay/GM_G_NavPlay';
-// import NavSortBar from '../NavSortBar/NavSortBar';
 
-// import './MajorIntLayout.css';
 
 // function MajorIntLayout() {
 //     const startingPointRef = useRef(null);
@@ -34,20 +19,37 @@
 //         "W": <GM_G_NavPlay />
 //     };
 
+//     const keyComponentsFifths = {
+//         "L": <CM_C_NavPlay />,
+//         "W": <GM_G_NavPlay />,
+//         "V": <DM_D_NavPlay />,
+//         "U": <AM_A_NavPlay />,
+//         "T": <EM_E_NavPlay />,
+//         "S": <BM_B_NavPlay />,
+//         "R": <GbM_Gb_NavPlay />,
+//         "Q": <DbM_Db_NavPlay />,
+//         "P": <AbM_Ab_NavPlay />,
+//         "O": <EbM_Eb_NavPlay />,
+//         "N": <BbM_Bb_NavPlay />,
+//         "M": <FM_F_NavPlay />,
+//     };
+
+
 //     const keyComponentsChromatic = {
 //         "L": <CM_C_NavPlay />,
-//         "M": <DbM_Db_NavPlay />,
-//         "N": <DM_D_NavPlay />,
+//         "Q": <DbM_Db_NavPlay />,
+//         "V": <DM_D_NavPlay />,
 //         "O": <EbM_Eb_NavPlay />,
-//         "P": <EM_E_NavPlay />,
-//         "Q": <FM_F_NavPlay />,
+//         "T": <EM_E_NavPlay />,
+//         "M": <FM_F_NavPlay />,
 //         "R": <GbM_Gb_NavPlay />,
-//         "S": <GM_G_NavPlay />,
-//         "T": <AbM_Ab_NavPlay />,
+//         "W": <GM_G_NavPlay />,
+//         "P": <AbM_Ab_NavPlay />,
 //         "U": <AM_A_NavPlay />,
-//         "V": <BbM_Bb_NavPlay />,
-//         "W": <BM_B_NavPlay />
+//         "N": <BbM_Bb_NavPlay />,
+//         "S": <BM_B_NavPlay />,
 //     };
+
 
 //     const [sortedKeys, setSortedKeys] = useState([]);
 //     const [sortingOption, setSortingOption] = useState('fourths');
@@ -58,39 +60,121 @@
 //     };
 
 //     const handleSortButtonClick = () => {
+//         if (sortingOption === 'fourths') {
+//             handleSortForFourths();
+//         } else if (sortingOption === 'chromatic') {
+//             handleSortForChromatic();
+//         } else if (sortingOption === 'fifths') {
+//             handleSortForFifths();
+//         }
+//     };
+
+//     const handleSortForFourths = () => {
 //         const startingPoint = startingPointRef.current.value;
 //         const endingPoint = endingPointRef.current.value;
 
-//         const startCharCode = startingPoint.charCodeAt(0);
-//         const endCharCode = endingPoint.charCodeAt(0);
+//         // Define the order of keys in the circle of fifths based on the keyComponentsFifths object keys
+//         const circleOfFourthsOrder = Object.keys(keyComponentsFourths);
 
-//         const keyComponents = sortingOption === 'fourths' ? keyComponentsFourths : keyComponentsChromatic;
+//         // Find the index of the starting and ending points in the circle of fifths
+//         const startIndex = circleOfFourthsOrder.indexOf(startingPoint);
+//         const endIndex = circleOfFourthsOrder.indexOf(endingPoint);
 
-//         const keysInRange = Object.entries(keyComponents).reduce((acc, [note, component]) => {
-//             const noteCharCode = note.charCodeAt(0);
-//             if ((startCharCode <= endCharCode && noteCharCode >= startCharCode && noteCharCode <= endCharCode) ||
-//                 (startCharCode > endCharCode && (noteCharCode >= startCharCode || noteCharCode <= endCharCode))) {
-//                 acc.push({ note, component });
-//             }
-//             return acc;
-//         }, []);
-
-//         let startIndex = 0;
-//         for (let i = 0; i < keysInRange.length; i++) {
-//             if (keysInRange[i].note === startingPoint) {
-//                 startIndex = i;
-//                 break;
+//         // Extract the keys in the range from start to end, considering the circular nature of the circle of fifths
+//         const keysInRange = [];
+//         if (startIndex !== -1 && endIndex !== -1) {
+//             if (startIndex <= endIndex) {
+//                 // Case where the range does not wrap around
+//                 for (let i = startIndex; i <= endIndex; i++) {
+//                     keysInRange.push({ note: circleOfFourthsOrder[i], component: keyComponentsFourths[circleOfFourthsOrder[i]] });
+//                 }
+//             } else {
+//                 // Case where the range wraps around
+//                 for (let i = startIndex; i < circleOfFourthsOrder.length; i++) {
+//                     keysInRange.push({ note: circleOfFourthsOrder[i], component: keyComponentsFourths[circleOfFourthsOrder[i]] });
+//                 }
+//                 for (let i = 0; i <= endIndex; i++) {
+//                     keysInRange.push({ note: circleOfFourthsOrder[i], component: keyComponentsFourths[circleOfFourthsOrder[i]] });
+//                 }
 //             }
 //         }
 
-//         const reorderedKeys = [...keysInRange.slice(startIndex), ...keysInRange.slice(0, startIndex)];
-
-//         setSortedKeys(reorderedKeys.map(({ component }) => component));
+//         setSortedKeys(keysInRange.map(({ component }) => component));
 //     };
+
+
+//     const handleSortForFifths = () => {
+//         const startingPoint = startingPointRef.current.value;
+//         const endingPoint = endingPointRef.current.value;
+
+//         // Define the order of keys in the circle of fifths based on the keyComponentsFifths object keys
+//         const circleOfFifthsOrder = Object.keys(keyComponentsFifths);
+
+//         // Find the index of the starting and ending points in the circle of fifths
+//         const startIndex = circleOfFifthsOrder.indexOf(startingPoint);
+//         const endIndex = circleOfFifthsOrder.indexOf(endingPoint);
+
+//         // Extract the keys in the range from start to end, considering the circular nature of the circle of fifths
+//         const keysInRange = [];
+//         if (startIndex !== -1 && endIndex !== -1) {
+//             if (startIndex <= endIndex) {
+//                 // Case where the range does not wrap around
+//                 for (let i = startIndex; i <= endIndex; i++) {
+//                     keysInRange.push({ note: circleOfFifthsOrder[i], component: keyComponentsFifths[circleOfFifthsOrder[i]] });
+//                 }
+//             } else {
+//                 // Case where the range wraps around
+//                 for (let i = startIndex; i < circleOfFifthsOrder.length; i++) {
+//                     keysInRange.push({ note: circleOfFifthsOrder[i], component: keyComponentsFifths[circleOfFifthsOrder[i]] });
+//                 }
+//                 for (let i = 0; i <= endIndex; i++) {
+//                     keysInRange.push({ note: circleOfFifthsOrder[i], component: keyComponentsFifths[circleOfFifthsOrder[i]] });
+//                 }
+//             }
+//         }
+
+//         setSortedKeys(keysInRange.map(({ component }) => component));
+//     };
+
+
+//     const handleSortForChromatic = () => {
+//         const startingPoint = startingPointRef.current.value;
+//         const endingPoint = endingPointRef.current.value;
+
+//         // Define the order of keys in the circle of fifths based on the keyComponentsFifths object keys
+//         const circleChromatic = Object.keys(keyComponentsChromatic);
+
+//         // Find the index of the starting and ending points in the circle of fifths
+//         const startIndex = circleChromatic.indexOf(startingPoint);
+//         const endIndex = circleChromatic.indexOf(endingPoint);
+
+//         // Extract the keys in the range from start to end, considering the circular nature of the circle of fifths
+//         const keysInRange = [];
+//         if (startIndex !== -1 && endIndex !== -1) {
+//             if (startIndex <= endIndex) {
+//                 // Case where the range does not wrap around
+//                 for (let i = startIndex; i <= endIndex; i++) {
+//                     keysInRange.push({ note: circleChromatic[i], component: keyComponentsChromatic[circleChromatic[i]] });
+//                 }
+//             } else {
+//                 // Case where the range wraps around
+//                 for (let i = startIndex; i < circleChromatic.length; i++) {
+//                     keysInRange.push({ note: circleChromatic[i], component: keyComponentsChromatic[circleChromatic[i]] });
+//                 }
+//                 for (let i = 0; i <= endIndex; i++) {
+//                     keysInRange.push({ note: circleChromatic[i], component: keyComponentsChromatic[circleChromatic[i]] });
+//                 }
+//             }
+//         }
+
+//         setSortedKeys(keysInRange.map(({ component }) => component));
+//     };
+
+
 
 //     useEffect(() => {
 //         handleSortButtonClick();
-//     }, []);
+//     }, [sortingOption]); // Run whenever sortingOption changes
 
 //     return (
 //         <div className="MajorIntLayout">
@@ -98,6 +182,7 @@
 //                 startingPointRef={startingPointRef}
 //                 endingPointRef={endingPointRef}
 //                 onSortingOptionChange={handleSortingOptionChange}
+//                 onSortButtonClick={handleSortButtonClick}
 //             />
 //             <div className="sorted-keys">
 //                 {sortedKeys.map((key, index) => (
@@ -107,7 +192,6 @@
 //         </div>
 //     );
 // }
-
 
 // export default MajorIntLayout;
 
@@ -296,8 +380,42 @@
 // "W": <BM_B_NavPlay />,
 
 
+// sixths: {
+//     "L": <CM_C_NavPlay />,
+//     "U": <AM_A_NavPlay />,
+//     "R": <GbM_Gb_NavPlay />,
+//     "O": <EbM_Eb_NavPlay />,
+
+//     "N": <BbM_Bb_NavPlay />,
+//     "W": <GM_G_NavPlay />,
+//     "T": <EM_E_NavPlay />,
+//     "Q": <DbM_Db_NavPlay />,
+
+//     "P": <AbM_Ab_NavPlay />,
+//     "M": <FM_F_NavPlay />,
+//     "V": <DM_D_NavPlay />,
+//     "S": <BM_B_NavPlay />,
+// },
 
 
+// sevenths: {
+//     "L": <CM_C_NavPlay />,
+//     "S": <BM_B_NavPlay />,
+//     "N": <BbM_Bb_NavPlay />,
+//     "U": <AM_A_NavPlay />,
+//     "P": <AbM_Ab_NavPlay />,
+//     "W": <GM_G_NavPlay />,
+//     "R": <GbM_Gb_NavPlay />,
+//     "M": <FM_F_NavPlay />,
+//     "T": <EM_E_NavPlay />,
+//     "O": <EbM_Eb_NavPlay />,
+//     "Q": <DbM_Db_NavPlay />,
+//     "V": <DM_D_NavPlay />,
+// },
+
+
+// <button onClick={handlePlayContToggle}>{isPlaying ? "Stop Cont" : "Play Cont"}</button>
+// <button onClick={handlePlayScaleToggle}>{isPlaying ? "Stop Scale" : "Play Scale"}</button>
 
 
 
