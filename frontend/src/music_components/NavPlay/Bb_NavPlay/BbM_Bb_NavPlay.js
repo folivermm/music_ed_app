@@ -15,48 +15,68 @@ const BbM_Bb_NavPlay = () => {
     const [displayRest, setDisplayRest] = useState(true);
     const [delay, setDelay] = useState(true);
     const [stopAfterMeasures, setStopAfterMeasures] = useState(null);
+    const [playButtonDisabled, setPlayButtonDisabled] = useState(false);
+    const [playbackEnded, setPlaybackEnded] = useState(false);
 
     const handleTempoChange = (newTempo) => {
         setTempo(newTempo);
     };
 
-    const handlePlayContToggle = () => {
-        setIsPlaying(!isPlaying);
+    const handlePlayCont = () => {
+        setIsPlaying(true);
         setContinuousPlay(false);
+        setDisplayRest(true);
         setDelay(true);
-        setStopAfterMeasures(7); // Reset stopAfterMeasures
+        setStopAfterMeasures(7);
+        setPlayButtonDisabled(true);
     };
 
-    const handlePlayToggle = () => {
-        setIsPlaying(!isPlaying);
-        setContinuousPlay(false);
-        setDelay(true);
-        setStopAfterMeasures(7); // Reset stopAfterMeasures
-    };
-
-    const handlePlayScaleToggle = () => {
-        setIsPlaying(!isPlaying);
+    const handlePlayScale = () => {
+        setIsPlaying(true);
         setContinuousPlay(true);
         setDisplayRest(false);
         setDelay(false);
-        setStopAfterMeasures(5); // Set stopAfterMeasures to 5
+        setStopAfterMeasures(5);
+        setPlayButtonDisabled(true);
+    };
+
+    const handlePlayKey = () => {
+        setIsPlaying(!isPlaying);
+        setContinuousPlay(false);
+        setDisplayRest(true);
+        setDelay(true);
+        setStopAfterMeasures(7);
+        setPlayButtonDisabled(true);
+    };
+
+    const handleStop = () => {
+        setIsPlaying(false);
+        setContinuousPlay(false);
+        setPlayButtonDisabled(false);
+        setPlaybackEnded(false); // Reset playbackEnded
     };
 
     useEffect(() => {
         setIsPlaying(false);
         setContinuousPlay(false);
-        setStopAfterMeasures(null); // Reset stopAfterMeasures when unmounting
+        setStopAfterMeasures(null);
+        setPlayButtonDisabled(false);
+        setPlaybackEnded(false);
     }, []);
+
 
     return (
         <div className="nav-play-container">
             <div className="nav-play">
                 <div className="controls-container">
                     <Metronome tempo={tempo} isPlaying={isPlaying} onTempoChange={handleTempoChange} stopAfterMeasures={stopAfterMeasures} />
-                    <button onClick={handlePlayContToggle}>{isPlaying ? "Stop Cont" : "Play Cont"}</button>
-                    <button onClick={handlePlayScaleToggle}>{isPlaying ? "Stop Scale" : "Play Scale"}</button>
-                    <button onClick={handlePlayToggle}>{isPlaying ? "Stop" : "Play Me"}</button>
-                    <BbM_MusicPlay tempo={tempo} shouldStart={isPlaying || continuousPlay} continuousPlay={continuousPlay} />
+                    <button onClick={handlePlayCont} disabled={isPlaying || playButtonDisabled}>Play Cont</button>
+                    <button onClick={handlePlayScale} disabled={isPlaying || playButtonDisabled}>Play Scale</button>
+                    <button onClick={handleStop} disabled={!isPlaying && !continuousPlay}>Stop</button>
+                    <button onClick={handlePlayKey} disabled={isPlaying || continuousPlay || playButtonDisabled}>
+                        Play Key
+                    </button>
+                    <BbM_MusicPlay tempo={tempo} shouldStart={isPlaying || continuousPlay} continuousPlay={continuousPlay} onStop={handleStop} />
                 </div>
                 <div className="music-container">
                     <BbM_IntMusicScore displayRest={displayRest} tempo={tempo} shouldStart={isPlaying || continuousPlay} delay={delay} />

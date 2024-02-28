@@ -1,3 +1,35 @@
+// fourths: {
+//     "L": { component: <CM_C_NavPlay />, onNextKey: handleNextKey },
+//     "M": { component: <FM_F_NavPlay />, onNextKey: handleNextKey },
+//     "N": { component: <BbM_Bb_NavPlay />, onNextKey: handleNextKey },
+//     "O": { component: <EbM_Eb_NavPlay />, onNextKey: handleNextKey },
+//     "P": { component: <AbM_Ab_NavPlay />, onNextKey: handleNextKey },
+//     "Q": { component: <DbM_Db_NavPlay />, onNextKey: handleNextKey },
+//     "R": { component: <GbM_Gb_NavPlay />, onNextKey: handleNextKey },
+//     "S": { component: <BM_B_NavPlay />, onNextKey: handleNextKey },
+//     "T": { component: <EM_E_NavPlay />, onNextKey: handleNextKey },
+//     "U": { component: <AM_A_NavPlay />, onNextKey: handleNextKey },
+//     "V": { component: <DM_D_NavPlay />, onNextKey: handleNextKey },
+//     "W": { component: <GM_G_NavPlay />, onNextKey: handleNextKey },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // function MajorIntLayout() {
