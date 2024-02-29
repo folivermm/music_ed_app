@@ -116,7 +116,10 @@ music-app
 │     │  │  └─ G_NavPlay
 │     │  │     ├─ GM_G_NavPlay.css
 │     │  │     └─ GM_G_NavPlay.js
-│     │  └─ originalMusicScore.js
+│     │  └─ notes
+│     │     ├─ example.js
+│     │     ├─ NavPlayContext.js
+│     │     └─ originalMusicScore.js
 │     └─ NavSortBar
 │        ├─ NavSortBar.css
 │        └─ NavSortBar.js

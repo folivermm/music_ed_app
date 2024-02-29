@@ -12,6 +12,7 @@ import AM_A_NavPlay from './NavPlay/A_NavPlay/AM_A_NavPlay';
 import DM_D_NavPlay from './NavPlay/D_NavPlay/DM_D_NavPlay';
 import GM_G_NavPlay from './NavPlay/G_NavPlay/GM_G_NavPlay';
 import NavSortBar from '../NavSortBar/NavSortBar';
+import { MusicControlProvider } from './MusicControlProvider'; // Adjust the import path accordingly
 
 import './MajorIntLayout.css';
 
@@ -122,19 +123,21 @@ function MajorIntLayout() {
     }, [sortingOption]);
 
     return (
-        <div className="MajorIntLayout">
-            <NavSortBar
-                startingPointRef={startingPointRef}
-                endingPointRef={endingPointRef}
-                onSortingOptionChange={handleSortingOptionChange}
-                onSortButtonClick={handleSortButtonClick}
-            />
-            <div className="sorted-keys">
-                {sortedKeys.map((key, index) => (
-                    <div key={index}>{key}</div>
-                ))}
+        <MusicControlProvider>
+            <div className="MajorIntLayout">
+                <NavSortBar
+                    startingPointRef={startingPointRef}
+                    endingPointRef={endingPointRef}
+                    onSortingOptionChange={handleSortingOptionChange}
+                    onSortButtonClick={handleSortButtonClick}
+                />
+                <div className="sorted-keys">
+                    {sortedKeys.map((key, index) => (
+                        <div key={index}>{key}</div>
+                    ))}
+                </div>
             </div>
-        </div>
+        </MusicControlProvider>
     );
 }
 
