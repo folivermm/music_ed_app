@@ -123,7 +123,7 @@ function MajorIntLayout() {
     }, [sortingOption]);
 
     return (
-        <MusicControlProvider>
+        <MusicControlProvider >
             <div className="MajorIntLayout">
                 <NavSortBar
                     startingPointRef={startingPointRef}
