@@ -6,7 +6,7 @@ import './CM_C_NavPlay.css';
 import { useMusicControl } from '../../MusicControlProvider';
 
 const CM_C_NavPlay = () => {
-    const { isPlaying, continuousPlay, playButtonDisabled, handleStop, displayRest, delay, stopAfterMeasures, handlePlayCont, handlePlayScale, handlePlayKey } = useMusicControl('C');
+    const { isPlaying, continuousPlay, playButtonDisabled, handleStop, displayRest, delay, stopAfterMeasures, handlePlayKey } = useMusicControl('C');
     const [tempo, setTempo] = React.useState(() => {
         const storedTempo = localStorage.getItem('tempo');
         return storedTempo ? parseInt(storedTempo, 10) : 60;
@@ -22,8 +22,8 @@ const CM_C_NavPlay = () => {
                 <div className="controls-container">
                     <Metronome tempo={tempo} isPlaying={isPlaying} onTempoChange={handleTempoChange} stopAfterMeasures={stopAfterMeasures} />
                     <button onClick={handleStop} disabled={!isPlaying && !continuousPlay}>Stop</button>
-                    <button onClick={() => handlePlayCont('C')} disabled={isPlaying || playButtonDisabled}>Play Cont</button>
-                    <button onClick={() => handlePlayScale('C')} disabled={isPlaying || playButtonDisabled}>Play Scale</button>
+                    {/* <button onClick={() => handlePlayCont('C')} disabled={isPlaying || playButtonDisabled}>Play Cont</button>
+                    <button onClick={() => handlePlayScale('C')} disabled={isPlaying || playButtonDisabled}>Play Scale</button> */}
                     <button onClick={() => handlePlayKey('C')} disabled={isPlaying || continuousPlay || playButtonDisabled}>
                         Play Key
                     </button>
